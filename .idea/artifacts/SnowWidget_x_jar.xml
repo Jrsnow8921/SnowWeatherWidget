@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SnowWidget_x:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SnowWidget_x_jar</output-path>
+    <root id="archive" name="SnowWidget_x.jar">
+      <element id="module-output" name="SnowWidget_x" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/miglayout-4.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
