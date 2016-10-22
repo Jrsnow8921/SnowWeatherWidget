@@ -1,10 +1,6 @@
 package widget;
 
 import com.sun.awt.AWTUtilities;
-import com.sun.xml.internal.ws.api.server.Adapter;
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
-import javafx.geometry.HorizontalDirection;
-import javafx.scene.shape.Ellipse;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -13,21 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import net.miginfocom.swing.MigLayout;
 import org.xml.sax.SAXException;
-import widget.weather;
 
 import static java.awt.Color.*;
 
@@ -50,14 +36,65 @@ public class Widget extends JFrame {
     JPanel panel = new JPanel(layout);
 
 
-    Timer SimpleTimer = new Timer(3600000, new ActionListener(){
+    Timer SimpleTimer = new Timer(5000, new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                icon_image = weather.weather_pic();
-                temp = weather.temp();
-                sunup = weather.sunup();
-                sundown = weather.sundown();
+
+                Thread t_i = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    icon_image = weather.weather_pic();
+                                } catch (IOException e1) {
+                                e1.printStackTrace();
+                                }
+                            }
+                        }
+                );
+
+                Thread t_t = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                    temp = weather.temp();
+                            }
+                        }
+                );
+
+                Thread t_u = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                sunup = weather.sunup();
+                            }
+                        }
+                );
+
+                Thread t_d = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                sundown = weather.sundown();
+                            }
+                        }
+                );
+
+                t_i.start();
+                t_t.start();
+                t_u.start();
+                t_d.start();
+
+                try {
+                    t_i.join();
+                    t_t.join();
+                    t_u.join();
+                    t_d.join();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
 
                 URL url = new URL(icon_image);
 
@@ -134,6 +171,9 @@ public class Widget extends JFrame {
 
         //runs every hour
         SimpleTimer.start();
+
+
+
     }
 
 
