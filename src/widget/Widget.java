@@ -36,7 +36,7 @@ public class Widget extends JFrame {
     JPanel panel = new JPanel(layout);
 
 
-    Timer SimpleTimer = new Timer(5000, new ActionListener(){
+    Timer SimpleTimer = new Timer(3600000, new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
